@@ -1,1 +1,1 @@
-export const getListContacts = state => state.contacts;
+export const selectListContacts = state => state.contacts;

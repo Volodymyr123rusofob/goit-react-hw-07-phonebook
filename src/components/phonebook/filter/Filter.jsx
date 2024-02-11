@@ -1,19 +1,25 @@
 import style from './filter.module.css';
 import ListContacts from '../listContacts/ListContacts';
 import { useSelector } from 'react-redux';
-import { getListContacts } from '../../../redux/contactsList/selectors';
+import { selectListContacts } from '../../../redux/contactsList/selectors';
 import { useDispatch } from 'react-redux';
-import { getfilterContact } from '../../../redux/contactsFilters/selectors';
+import { selectFilterContact } from '../../../redux/contactsFilters/selectors';
 import { filterContact } from '../../../redux/contactsFilters/filterSlice';
+import { fetchContacts } from '../../../redux/contactsList/contacts-operations';
+import { useEffect } from 'react';
 
 const FilterContact = () => {
-  const contacts = useSelector(getListContacts);
-  const filter = useSelector(getfilterContact);
+  const { items, isLoading, error } = useSelector(selectListContacts);
+  const filter = useSelector(selectFilterContact);
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, []);
+
   const getFilteredContact = () => {
-    if (!filter) return contacts;
+    if (!filter) return items;
     const normalizedFilter = filter.toLowerCase();
-    const filteredContact = contacts.filter(({ name }) => {
+    const filteredContact = items.filter(({ name }) => {
       const normalizedName = name.toLowerCase();
       return normalizedName.includes(normalizedFilter);
     });
@@ -24,7 +30,7 @@ const FilterContact = () => {
     dispatch(filterContact(target.value));
   };
 
-  const items = getFilteredContact();
+  const item = getFilteredContact();
   return (
     <>
       <input
@@ -33,7 +39,9 @@ const FilterContact = () => {
         name="filter"
         placeholder="Search"
       />
-      <ListContacts items={items} />
+      {error && <p>{error}</p>}
+      {isLoading && <p>...Loading</p>}
+      {Boolean(items.length) && <ListContacts items={item} />}
     </>
   );
 };

@@ -3,10 +3,10 @@ import style from './contactForm.module.css';
 import { addContact } from '../../../redux/contactsList/contactSlice';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { getListContacts } from '../../../redux/contactsList/selectors';
+import { selectListContacts } from '../../../redux/contactsList/selectors';
 
 const ContactForm = () => {
-  const contacts = useSelector(getListContacts);
+  const contacts = useSelector(selectListContacts);
   const dispatch = useDispatch();
   const nameId = nanoid();
   const numberId = nanoid();
