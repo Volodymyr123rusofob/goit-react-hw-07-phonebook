@@ -29,7 +29,6 @@ const contactSlice = createSlice({
     builder
       .addCase(fetchContacts.pending, pending)
       .addCase(fetchContacts.fulfilled, (state, { payload }) => {
-        console.log('nema');
         state.isLoading = false;
         state.items = payload;
       })
@@ -48,5 +47,4 @@ const contactSlice = createSlice({
       .addCase(deleteContact.rejected, rejected);
   },
 });
-console.log('nema');
 export default contactSlice.reducer;
