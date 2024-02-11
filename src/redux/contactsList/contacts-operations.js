@@ -1,51 +1,53 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as contactApi from '../../api/contacts-api';
-import {
-  fetchContactLoading,
-  fetchContactSuccess,
-  fetchContactError,
-  addContactLoading,
-  addContactSuccess,
-  addContactError,
-  deleteContactLoading,
-  deleteContactSuccess,
-  deleteContactError,
-} from './contactSlice';
 
-export const fetchContacts = () => {
-  const func = async dispatch => {
+export const fetchContacts = createAsyncThunk(
+  'contacts/featchAll',
+  async (_, { rejectWithValue }) => {
     try {
-      dispatch(fetchContactLoading());
       const data = await contactApi.requestContacts();
-      dispatch(fetchContactSuccess(data));
+      return data;
     } catch (error) {
-      dispatch(fetchContactError(error.message));
+      return rejectWithValue(error.message);
     }
-  };
-  return func;
-};
+  }
+);
 
-export const addContact = body => {
-  const func = async dispatch => {
+export const addContact = createAsyncThunk(
+  'contacts/addContact',
+  async (body, { rejectWithValue }) => {
+    console.log(body);
     try {
-      dispatch(addContactLoading());
       const data = await contactApi.requestAddContact(body);
-      dispatch(addContactSuccess(data));
+      return data;
     } catch (error) {
-      dispatch(addContactError(error.message));
+      return rejectWithValue(error.message);
     }
-  };
-  return func;
-};
+  },
+  {
+    condition: ({ name }, { getState }) => {
+      const { contacts } = getState();
+      const normalizedName = name.toLowerCase();
+      const dublicate = contacts.items.find(item => {
+        const normalizedCurrentName = item.name.toLowerCase();
+        return normalizedCurrentName === normalizedName;
+      });
+      if (dublicate) {
+        alert(`Contact ${name} already in list`);
+        return false;
+      }
+    },
+  }
+);
 
-export const deleteContact = id => {
-  const func = async dispatch => {
+export const deleteContact = createAsyncThunk(
+  'contacts/deleteContact',
+  async (id, { rejectWithValue }) => {
     try {
-      dispatch(deleteContactLoading());
       await contactApi.requestDeleteContact(id);
-      dispatch(deleteContactSuccess(id));
+      return id;
     } catch (error) {
-      dispatch(deleteContactError(error.message));
+      return rejectWithValue(error.message);
     }
-  };
-  return func;
-};
+  }
+);
