@@ -14,7 +14,7 @@ const FilterContact = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchContacts());
-  }, []);
+  }, [dispatch]);
 
   const getFilteredContact = () => {
     if (!filter) return items;
