@@ -8,3 +8,13 @@ export const requestContacts = async () => {
   const { data } = await contactInstance.get('/');
   return data;
 };
+
+export const requestAddContact = async body => {
+  const { data } = await contactInstance.post('/', body);
+  return data;
+};
+
+export const requestDeleteContact = async id => {
+  const { data } = await contactInstance.delete(`/${id}`);
+  return data;
+};

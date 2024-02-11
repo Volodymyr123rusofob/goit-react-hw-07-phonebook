@@ -1,6 +1,6 @@
 import style from './listContacts.module.css';
 import { useDispatch } from 'react-redux';
-import { deleteContact } from '../../../redux/contactsList/contactSlice';
+import { deleteContact } from '../../../redux/contactsList/contacts-operations';
 
 const ListContacts = ({ items }) => {
   const dispatch = useDispatch();
