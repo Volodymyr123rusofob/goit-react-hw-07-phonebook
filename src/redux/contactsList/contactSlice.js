@@ -25,24 +25,11 @@ const initialState = {
 const contactSlice = createSlice({
   name: 'contacts',
   initialState,
-  reducers: {
-    // addContactLoading: state => {
-    //   state.isLoading = true;
-    //   state.error = null;
-    // },
-    // addContactSuccess: (state, { payload }) => {
-    //   state.isLoading = false;
-    //   state.items.push(payload);
-    // },
-    // addContactError: (state, { payload }) => {
-    //   state.isLoading = false;
-    //   state.error = payload;
-    // },
-  },
   extraReducers: builder => {
     builder
       .addCase(fetchContacts.pending, pending)
       .addCase(fetchContacts.fulfilled, (state, { payload }) => {
+        console.log('nema');
         state.isLoading = false;
         state.items = payload;
       })
@@ -50,7 +37,7 @@ const contactSlice = createSlice({
       .addCase(addContact.pending, pending)
       .addCase(addContact.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.items = payload;
+        state.items.push(payload);
       })
       .addCase(addContact.rejected, rejected)
       .addCase(deleteContact.pending, pending)
@@ -61,5 +48,5 @@ const contactSlice = createSlice({
       .addCase(deleteContact.rejected, rejected);
   },
 });
-
+console.log('nema');
 export default contactSlice.reducer;
